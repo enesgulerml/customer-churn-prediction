@@ -9,6 +9,8 @@ The core of this project is **v1.0 (Feature Engineering)**, which converts raw t
 * **v3.0: API Serving (FastAPI)**
 * **v3.1: Docker**
 * **V4.0: Streamlit UI**
+=======
+* **v4.0: Streamlit UI** 
 
 ---
 
