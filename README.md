@@ -86,8 +86,6 @@ Follow these steps to set up the project environment on your local machine.
 
 ---
 
-## 🧪 v5.1: Running Automated Tests (Pytest)
-
 ## 🧪 v5.3: Running Automated Tests (Pytest)
 
 This project includes a "Google-level" safety net of automated tests (`test/` directory) using `pytest`. This test suite is organized into three layers of the Test Pyramid:
