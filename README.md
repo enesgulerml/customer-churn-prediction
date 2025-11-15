@@ -7,6 +7,7 @@ The core of this project is **v1.0 (Feature Engineering)**, which converts raw t
 * **v1.0: Feature Engineering (RFM + Churn)**
 * **v2.0: Experiment Tracking (MLFlow + XGBoost)**
 * **v3.0: API Serving (FastAPI)**
+* **v4.0: Streamlit UI** 
 
 ---
 
