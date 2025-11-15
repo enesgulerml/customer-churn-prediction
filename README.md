@@ -7,6 +7,8 @@ The core of this project is **v1.0 (Feature Engineering)**, which converts raw t
 * **v1.0: Feature Engineering (RFM + Churn)**
 * **v2.0: Experiment Tracking (MLFlow + XGBoost)**
 * **v3.0: API Serving (FastAPI)**
+* **v3.1: Docker**
+* **V4.0: Streamlit UI**
 
 ---
 
@@ -80,6 +82,7 @@ Follow these steps to set up the project environment on your local machine.
     ```bash
     pip install -e .
     ```
+    Note: If you encounter environment-specific errors (like conda not found or docker memory issues), please check our TROUBLESHOOTING.md guide.
 
 ---
 
