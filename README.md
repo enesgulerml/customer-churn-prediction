@@ -117,10 +117,54 @@ This runs the v3.0 API server. It loads the `churn_model.joblib` (trained in the
     uvicorn app.main:app --reload
     ```
 
-### 3. Test the API
+### 2. v3.1: Serve Model (FastAPI + Docker)
 
-Once the server is running (`http://127.0.0.1:8000`), go to your browser:
+This project is designed to serve the API (v3.0) as a production-ready **Docker Container**.
 
-* **API Docs (Swagger):** `http://localhost:8000/docs`
+The `Dockerfile` packages the entire application (`src` and `app`), installs all dependencies, and starts the `uvicorn` server. The `.dockerignore` file ensures that no data, models, or logs are incorrectly copied into the image, following the "Code in Image, Data on Volume" principle.
 
-You can use the `/docs` interface to send test data and get a live churn prediction.
+#### 1. Build the v3.1 API Image
+(If you encounter a `cannot allocate memory` error, please see our [TROUBLESHOOTING.md](TROUBLESHOOTING.md) guide.)
+```bash
+docker build -t churn-api:v3 .
+```
+
+#### 2. Run the API Server (Docker)
+This command runs the API in "detached" mode (`-d`), maps your local port `8000` to the container's port `80` (`-p 8000:80`), and crucially, mounts the `models/` directory (`-v`) so the API can load the `churn_model.joblib`.
+
+```bash
+docker run -d --rm \
+  -p 8000:80 \
+  -v ${pwd}/models:/app/models \
+  churn-api:v3
+```
+Once running, you can access the documentation at **`http://localhost:8000/docs`**.
+
+---
+
+### 3. v4.0: View Dashboard (Streamlit)
+
+This repository also includes a v4.0 interactive dashboard (`dashboard/app.py`).
+
+This dashboard is a **decoupled frontend**. It does *not* load the model. It acts as a client that sends HTTP requests to the **v3.1 API Container** (which must be running).
+
+#### How to Run the Dashboard
+
+This requires **two separate terminals** running simultaneously:
+
+**➡️ Terminal 1: Run the API Server (v3.1)**
+(If not already running) Start the FastAPI Docker container. This is the "Motor".
+```bash
+docker run -d --rm \
+  -p 8000:80 \
+  -v ${pwd}/models:/app/models \
+  churn-api:v3
+```
+
+**➡️ Terminal 2: Run the Streamlit App (v4.0)**
+Activate the conda environment and run the Streamlit app. This is the "Dashboard".
+```bash
+conda activate customer-churn-prediction
+python -m streamlit run dashboard/app.py
+```
+Your browser will open `http://localhost:8501`, where you can interact with the live system.
