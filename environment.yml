@@ -12,6 +12,7 @@ dependencies:
   - seaborn # For Notebooks
   - openpyxl
   - xgboost
+  - pytest
   # v2.0: Experiment Tracking
   - mlflow
 
