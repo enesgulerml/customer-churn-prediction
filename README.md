@@ -88,15 +88,37 @@ Follow these steps to set up the project environment on your local machine.
 
 ## 🧪 v5.1: Running Automated Tests (Pytest)
 
-This project includes a "safety net" of automated unit tests using `pytest` located in the `test/` directory. These tests verify the integrity of the core components (like the model pipeline).
+## 🧪 v5.3: Running Automated Tests (Pytest)
 
-After installation (Step 4), you can run all tests from the project root directory:
+This project includes a "Google-level" safety net of automated tests (`test/` directory) using `pytest`. This test suite is organized into three layers of the Test Pyramid:
+
+1.  **v5.1 (Unit Tests):** (`test_pipeline.py`)
+    * Tests core components (like `src/pipeline.py`) in isolation.
+2.  **v5.2 (Integration Tests):** (`test_train_integration.py`)
+    * Tests the entire `src/` training pipeline (Feature Engineering + Model Training) to validate performance (F1 > 0.75) and check for data leakage (F1 != 1.0000).
+3.  **v5.3 (E2E API Tests):** (`test_api_e2e.py`)
+    * Automatically starts the v3.1 Docker container (`churn-api:v3`), sends live HTTP requests to the `/predict` endpoint, and validates the JSON response.
+
+### How to Run Tests
+
+After installation (Step 4) and activating the environment:
+
+**1. Run All Tests (Fast & Slow):**
+This will run all 7 tests (Unit, Integration, and E2E).
+*(Note: This requires Docker to be running and the `churn-api:v3` image to be built.)*
 
 ```bash
 python -m pytest
 ```
+*Expected Output: `== 7 passed ==`*
 
-If all tests pass (`3 passed`), the project's core logic is confirmed to be working as expected.
+**2. Run Only Fast Unit Tests:**
+This skips any test marked as `@pytest.mark.slow` (like the Integration and E2E tests) and runs only the fast unit tests (e.g., `test_pipeline.py`).
+
+```bash
+python -m pytest -m "not slow"
+```
+*Expected Output: `== 3 passed, 4 deselected ==`*
 
 ## ⚡ How to Use
 
