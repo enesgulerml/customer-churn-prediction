@@ -1,0 +1,29 @@
+name: customer-churn-prediction
+channels:
+  - conda-forge
+dependencies:
+  # v1.0: Basic Pipeline
+  - python=3.10
+  - pandas
+  - scikit-learn
+  - joblib
+  - pathlib
+  - jupyterlab
+  - seaborn # For Notebooks
+  - openpyxl
+  - xgboost
+  # v2.0: Experiment Tracking
+  - mlflow
+
+  # v3.0: API Server
+  - fastapi
+  - uvicorn[standard]
+  - pydantic
+
+  # v4.0: Dashboard
+  - streamlit
+  - requests
+
+  # Necessary
+  - pip
+  - ipykernel # For Jupyter to recognize this environment
