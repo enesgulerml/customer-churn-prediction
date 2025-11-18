@@ -61,7 +61,7 @@ Follow these steps to set up the project environment on your local machine.
 
 1.  **Clone the Repository:**
     ```bash
-    git clone [https://github.com/enesgulerml/customer-churn-prediction.git](https://github.com/enesgulerml/customer-churn-prediction.git)
+    git clone https://github.com/enesgulerml/customer-churn-prediction.git
     cd customer-churn-prediction
     ```
 
