@@ -54,7 +54,7 @@ Prerequisites
 1. Environment Setup
 ```bash
 # Clone the repository
-git clone [https://github.com/enesgulerml/customer-churn-prediction.git](https://github.com/enesgulerml/customer-churn-prediction.git)
+git clone https://github.com/enesgulerml/customer-churn-prediction.git
 cd customer-churn-prediction
 
 # Create Virtual Environment
