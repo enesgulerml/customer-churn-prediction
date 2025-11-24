@@ -1,205 +1,129 @@
-# End-to-End Customer Churn Prediction (v3.0)
+# 📉 Customer Churn Prediction & Retention System
 
-This project transforms a raw, transactional Excel dataset (`online_retail_II.xlsx`) into a "Google-level," production-ready MLOps pipeline. It moves beyond the "kaos" of notebooks into a fully engineered, reproducible, and decoupled system.
+![Python](https://img.shields.io/badge/Python-3.10-blue)
+![XGBoost](https://img.shields.io/badge/Model-XGBoost-orange)
+![FastAPI](https://img.shields.io/badge/FastAPI-Production-009688)
+![Docker](https://img.shields.io/badge/Docker-Containerized-2496ED)
+![Tests](https://img.shields.io/badge/Tests-Pytest_%26_E2E-brightgreen)
 
-The core of this project is **v1.0 (Feature Engineering)**, which converts raw transaction logs into a customer-centric table (RFM + Churn features). This engineered dataset is then used for **v2.0 (Experiment Tracking)** and **v3.0 (API Serving)**.
+## 📖 Overview
+This repository hosts a robust **Predictive Analytics Pipeline** designed to identify customers at risk of churning. Using the **Online Retail II** dataset, the system analyzes historical transaction behavior to predict future disengagement.
 
-* **v1.0: Feature Engineering (RFM + Churn)**
-* **v2.0: Experiment Tracking (MLFlow + XGBoost)**
-* **v3.0: API Serving (FastAPI)**
-* **v3.1: Docker**
-* **V4.0: Streamlit UI**
+The goal is to empower marketing teams with actionable intelligence, shifting from reactive measures to **proactive retention strategies**.
+
+**Technical Highlights:**
+* **Advanced Feature Engineering:** Transformation of raw transactional data into behavioral features (RFM, Tenure, Average Basket Size).
+* **Modular Pipeline:** Decoupled architecture separating data processing, training (`src/pipeline.py`), and inference.
+* **Production-Grade Serving:** Model served via high-performance **FastAPI**, containerized with **Docker**.
+* **Rigorous Testing:** Includes both Unit Tests for the pipeline and E2E Tests for the API.
 
 ---
 
-## 🚀 Project Structure
+## 📂 Project Structure
 
-The repository is organized based on professional data science standards to ensure separation of concerns:
-
-```
+```text
 customer-churn-prediction/
 │
-├── app/                  <- (v3.0) API service code
-│   ├── __init__.py
-│   ├── main.py           <- (FastAPI "motor" - serves predictions)
-│   └── schema.py         <- (Pydantic "contract" - defines API inputs/outputs)
+├── app/                  # Inference Service
+│   ├── main.py           # FastAPI Entry Point
+│   └── schema.py         # Pydantic Data Validation
 │
-├── data/
-│   ├── raw/
-│   │   └── online_retail_II.xlsx <- (Raw data, *not* tracked by Git)
-│   └── processed/
-│       └── customer_features.csv <- (Engineered data, *not* tracked by Git)
+├── dashboard/            # Business Dashboard
+│   └── app.py            # Streamlit Interface for Marketing Teams
 │
-├── models/
-│   └── churn_model.joblib    <- (Trained XGBoost pipeline, *not* tracked by Git)
+├── src/                  # ML Core Logic
+│   ├── feature_engineering.py  # 🧠 Feature Extraction (The "Secret Sauce")
+│   ├── pipeline.py       # Orchestration of Data Flow
+│   ├── train.py          # Model Training & MLflow Logging
+│   └── config.py         # Central Configuration
 │
-├── mlruns/                 <- (v2.0) MLFlow experiment logs, *not* tracked by Git)
+├── tests/                # Quality Assurance
+│   ├── test_pipeline.py  # Unit Tests for Data Processing
+│   └── test_api_e2e.py   # Integration Tests for Dockerized API
 │
-├── notebooks/
-│   └── 01-Data-Exploration.ipynb <- (EDA and prototyping notebook)
-│
-├── src/                  <- (v1.0 & v2.0) All training & engineering source code
-│   │
-│   ├── __init__.py
-│   ├── config.py             <- (All settings, paths, and hyperparameters)
-│   ├── data_processing.py    <- (Raw data cleaning functions)
-│   ├── feature_engineering.py  <- (RFM + Churn creation functions)
-│   ├── pipeline.py           <- (Scikit-learn + XGBoost pipeline definition)
-│   └── train.py              <- (Main training script - "Orchestrator")
-│
-├── .gitignore                <- (Tells Git to ignore data, models, logs)
-├── environment.yml           <- (Conda environment dependencies)
-├── setup.py                  <- (Makes the 'src' folder an installable package)
-└── README.md                 <- (This file - The project user manual)
+├── Dockerfile            # Container Configuration
+└── requirements.txt      # Dependencies
 ```
 
----
+## 🛠️ Installation & Setup
+Prerequisites
+* Python 3.10+
+* Docker (Required for E2E tests and Serving)
+* Dataset: [Online Retail II](https://www.kaggle.com/code/ekrembayar/rfm-analysis-online-retail-ii) (Place the .xlsx file in data/raw/)
 
-## 🛠️ Installation & Setup (v1.0)
-
-Follow these steps to set up the project environment on your local machine.
-
-1.  **Clone the Repository:**
-    ```bash
-    git clone https://github.com/enesgulerml/customer-churn-prediction.git
-    cd customer-churn-prediction
-    ```
-
-2.  **Download the Data:**
-    * This project uses the **Online Retail II** dataset.
-    * Download the `online_retail_II.xlsx` file.
-    * Place the file inside the `data/raw/` directory (you may need to create these folders).
-
-3.  **Create Conda Environment:**
-    This command reads the `environment.yml` file to create an isolated environment with all libraries (including `xgboost`, `mlflow`, `fastapi`, and `openpyxl`).
-    ```bash
-    conda env create -f environment.yml
-    conda activate customer-churn-prediction
-    ```
-
-4.  **Install the Project Package:**
-    This is the crucial "Google-level" step that makes your `src` code importable (solves `ModuleNotFoundError`).
-    ```bash
-    pip install -e .
-    ```
-    Note: If you encounter environment-specific errors (like conda not found or docker memory issues), please check our TROUBLESHOOTING.md guide.
-
----
-
-## 🧪 v5.3: Running Automated Tests (Pytest)
-
-This project includes a "Google-level" safety net of automated tests (`test/` directory) using `pytest`. This test suite is organized into three layers of the Test Pyramid:
-
-1.  **v5.1 (Unit Tests):** (`test_pipeline.py`)
-    * Tests core components (like `src/pipeline.py`) in isolation.
-2.  **v5.2 (Integration Tests):** (`test_train_integration.py`)
-    * Tests the entire `src/` training pipeline (Feature Engineering + Model Training) to validate performance (F1 > 0.75) and check for data leakage (F1 != 1.0000).
-3.  **v5.3 (E2E API Tests):** (`test_api_e2e.py`)
-    * Automatically starts the v3.1 Docker container (`churn-api:v3`), sends live HTTP requests to the `/predict` endpoint, and validates the JSON response.
-
-### How to Run Tests
-
-After installation (Step 4) and activating the environment:
-
-**1. Run All Tests (Fast & Slow):**
-This will run all 7 tests (Unit, Integration, and E2E).
-*(Note: This requires Docker to be running and the `churn-api:v3` image to be built.)*
-
+1. Environment Setup
 ```bash
-python -m pytest
+# Clone the repository
+git clone [https://github.com/enesgulerml/customer-churn-prediction.git](https://github.com/enesgulerml/customer-churn-prediction.git)
+cd customer-churn-prediction
+
+# Create Virtual Environment
+conda create -n churn-prediction python=3.10 -y
+conda activate churn-prediction
+
+# Install Dependencies
+pip install -r requirements.txt
+pip install -e .
 ```
-*Expected Output: `== 7 passed ==`*
 
-**2. Run Only Fast Unit Tests:**
-This skips any test marked as `@pytest.mark.slow` (like the Integration and E2E tests) and runs only the fast unit tests (e.g., `test_pipeline.py`).
+## ⚡ Workflow & Pipeline
+This project implements a modular pipeline design.
+### Phase 1: Feature Engineering & Training
+The raw data is complex transactional logs. The pipeline aggregates this into a customer-level view.
 
-```bash
-python -m pytest -m "not slow"
-```
-*Expected Output: `== 3 passed, 4 deselected ==`*
-
-## ⚡ How to Use
-
-Once installed, the project provides three main functions: Training (v2.1), API (v3.0), and (soon) Dashboard (v4.0).
-
-### 1. v2.1: Train Model & Track (MLFlow)
-
-This is the main "orchestrator" script. It runs the entire pipeline:
-1.  **Data Processing:** Cleans the raw Excel data.
-2.  **Feature Engineering:** Calculates RFM features and creates the `CHURN` target variable.
-3.  **Training:** Trains the XGBoost model.
-4.  **Tracking:** Logs all parameters (like `CHURN_THRESHOLD_DAYS`) and the `F1 Score` (e.g., `0.7710`) to MLFlow.
+1. Execute Pipeline: This command runs data cleaning, feature extraction, and model training.
 
 ```bash
 python -m src.train
 ```
+Artifacts will be logged to MLflow and the local models/ directory.
 
-To view the results and compare different runs (e.g., `RandomForest` vs. `XGBoost`), launch the MLFlow dashboard:
-```bash
-mlflow ui
-```
-(Go to `http://127.0.0.1:5000` in your browser)
+### Phase 2: Docker Deployment
+Deploy the trained model as a microservice.
 
-### 2. v3.0: Serve Model (FastAPI)
-
-This runs the v3.0 API server. It loads the `churn_model.joblib` (trained in the step above) and serves it.
-
-**Architecture Note:** This API expects *already-engineered features* (`Frequency`, `Monetary`, `Country`), not raw data.
-
-1.  Make sure you have a trained model in `models/churn_model.joblib` (by running `python -m src.train` first).
-2.  Run the server from the project root:
-    ```bash
-    uvicorn app.main:app --reload
-    ```
-
-### 2. v3.1: Serve Model (FastAPI + Docker)
-
-This project is designed to serve the API (v3.0) as a production-ready **Docker Container**.
-
-The `Dockerfile` packages the entire application (`src` and `app`), installs all dependencies, and starts the `uvicorn` server. The `.dockerignore` file ensures that no data, models, or logs are incorrectly copied into the image, following the "Code in Image, Data on Volume" principle.
-
-#### 1. Build the v3.1 API Image
-(If you encounter a `cannot allocate memory` error, please see our [TROUBLESHOOTING.md](TROUBLESHOOTING.md) guide.)
+1. Build Image: We tag the image as v3 to align with our integration tests.
 ```bash
 docker build -t churn-api:v3 .
 ```
 
-#### 2. Run the API Server (Docker)
-This command runs the API in "detached" mode (`-d`), maps your local port `8000` to the container's port `80` (`-p 8000:80`), and crucially, mounts the `models/` directory (`-v`) so the API can load the `churn_model.joblib`.
-
+2. Run Container: We map port 8010 to avoid conflicts with other local services.
 ```bash
-docker run -d --rm \
-  -p 8000:80 \
-  -v ${pwd}/models:/app/models \
-  churn-api:v3
+docker run -d --rm -p 8010:80 churn-api:v3
 ```
-Once running, you can access the documentation at **`http://localhost:8000/docs`**.
+👉 API Docs: http://localhost:8010/docs
 
----
-
-### 3. v4.0: View Dashboard (Streamlit)
-
-This repository also includes a v4.0 interactive dashboard (`dashboard/app.py`).
-
-This dashboard is a **decoupled frontend**. It does *not* load the model. It acts as a client that sends HTTP requests to the **v3.1 API Container** (which must be running).
-
-#### How to Run the Dashboard
-
-This requires **two separate terminals** running simultaneously:
-
-**➡️ Terminal 1: Run the API Server (v3.1)**
-(If not already running) Start the FastAPI Docker container. This is the "Motor".
+### Phase 3: Business Dashboard
+Launch the interface to visualize churn probabilities.
 ```bash
-docker run -d --rm \
-  -p 8000:80 \
-  -v ${pwd}/models:/app/models \
-  churn-api:v3
+streamlit run dashboard/app.py
+```
+(Ensure the dashboard is configured to point to http://localhost:8010)
+
+## 🧪 Testing Strategy
+This project maintains a high standard of code quality through automated testing.
+
+1. Unit Tests (Pipeline Logic)
+Validates that feature engineering (e.g., Tenure calculation) works as expected.
+```bash
+pytest tests/test_pipeline.py
 ```
 
-**➡️ Terminal 2: Run the Streamlit App (v4.0)**
-Activate the conda environment and run the Streamlit app. This is the "Dashboard".
+2. E2E Tests (API Integration)
+
+Validates that the Dockerized API accepts requests and returns valid predictions. Note: These tests automatically attempt to start a Docker container named churn-api:v3. Ensure the image is built before running.
+
 ```bash
-conda activate customer-churn-prediction
-python -m streamlit run dashboard/app.py
+# Build image first (if not done)
+docker build -t churn-api:v3 .
+
+# Run E2E tests
+pytest tests/test_api_e2e.py
 ```
-Your browser will open `http://localhost:8501`, where you can interact with the live system.
+
+## 📊 Feature Engineering Logic
+The model's performance relies on derived features:
+* Recency: Days since last purchase.
+* Frequency: Number of distinct orders.
+* Monetary: Total Customer Lifetime Value (CLTV).
+* Tenure: Days since the first purchase.
+* Basket Size: Average items per order.
