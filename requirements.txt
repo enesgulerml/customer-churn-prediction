@@ -1,0 +1,15 @@
+pandas
+scikit-learn
+joblib
+jupyterlab
+seaborn
+openpyxl
+xgboost
+pytest
+mlflow
+fastapi
+uvicorn[standard]
+pydantic
+streamlit
+requests
+ipykernel
