@@ -83,7 +83,7 @@ Deploy the trained model as a microservice.
 
 1. Build Image: We tag the image as v3 to align with our integration tests.
 ```bash
-docker build -t churn-api:v3 .
+docker build -t churn-api:latest .
 ```
 
 2. Run Container: We map port 8000 to avoid conflicts with other local services.
