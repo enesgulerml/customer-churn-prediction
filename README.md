@@ -86,18 +86,17 @@ Deploy the trained model as a microservice.
 docker build -t churn-api:v3 .
 ```
 
-2. Run Container: We map port 8010 to avoid conflicts with other local services.
+2. Run Container: We map port 8000 to avoid conflicts with other local services.
 ```bash
-docker run -d --rm -p 8010:80 churn-api:v3
+docker run -d --rm -p 8000:80 churn-api:latest
 ```
-👉 API Docs: http://localhost:8010/docs
+👉 API Docs: http://localhost:8000/docs
 
 ### Phase 3: Business Dashboard
 Launch the interface to visualize churn probabilities.
 ```bash
 streamlit run dashboard/app.py
 ```
-(Ensure the dashboard is configured to point to http://localhost:8010)
 
 ## 🧪 Testing Strategy
 This project maintains a high standard of code quality through automated testing.

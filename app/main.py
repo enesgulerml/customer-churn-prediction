@@ -11,8 +11,6 @@ from src.config import MODEL_OUTPUT_PATH
 # --- Installing the Application and Model ---
 app = FastAPI(
     title="Customer Churn Prediction API",
-    description="v3.0 - A 'Google-level' API service for the Churn (RFM) pipeline.",
-    version="3.0.0"
 )
 
 
