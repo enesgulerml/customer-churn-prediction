@@ -104,7 +104,7 @@ This project maintains a high standard of code quality through automated testing
 1. Unit Tests (Pipeline Logic)
 Validates that feature engineering (e.g., Tenure calculation) works as expected.
 ```bash
-pytest tests/test_pipeline.py
+pytest test/test_pipeline.py
 ```
 
 2. E2E Tests (API Integration)
@@ -116,7 +116,7 @@ Validates that the Dockerized API accepts requests and returns valid predictions
 docker build -t churn-api:v3 .
 
 # Run E2E tests
-pytest tests/test_api_e2e.py
+pytest test/test_api_e2e.py
 ```
 
 ## 📊 Feature Engineering Logic

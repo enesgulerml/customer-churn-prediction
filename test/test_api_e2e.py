@@ -15,7 +15,7 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).parent.parent
 
 # Define constants for our test service
-IMAGE_NAME = "churn-api:v3"
+IMAGE_NAME = "churn-api:latest"
 CONTAINER_NAME = "test_churn_api_service"
 API_URL = "http://127.0.0.1:8000"
 HEALTH_CHECK_URL = f"{API_URL}/"
